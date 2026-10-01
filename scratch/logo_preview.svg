@@ -1,0 +1,44 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="30%" stop-color="#0080FF" />
+      <stop offset="100%" stop-color="#0051FF" />
+    </linearGradient>
+    <linearGradient id="whiteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E0E7FF" />
+    </linearGradient>
+  </defs>
+
+  <rect width="500" height="500" fill="#000000" />
+
+  <!-- Blue Path -->
+  <path
+    d="M 205 125 
+       L 310 125 
+       Q 325 125 315 135 
+       L 218.8873016277919 251.1126983722081 
+       A 44 44 0 1 1 218.8873016277919 188.8873016277919 
+       L 245 225"
+    fill="none"
+    stroke="url(#blueGrad)"
+    stroke-width="20"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- White Path -->
+  <path
+    d="M 265 205 
+       L 281.11269837220806 188.8873016277919 
+       A 44 44 0 1 1 281.11269837220806 251.1126983722081 
+       L 210 325"
+    fill="none"
+    stroke="url(#whiteGrad)"
+    stroke-width="20"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

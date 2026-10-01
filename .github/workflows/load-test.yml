@@ -1,0 +1,59 @@
+name: Load Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: "Test type to run"
+        required: true
+        default: "load"
+        type: choice
+        options:
+          - smoke
+          - load
+          - spike
+      base_url:
+        description: "Base URL to test against"
+        required: false
+        default: "https://zalvy.com"
+
+jobs:
+  load-test:
+    name: k6 Load Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup k6
+        uses: grafana/k6-action@v0.2.0
+        with:
+          version: latest
+
+      - name: Run k6 load test
+        run: |
+          k6 run \
+            --env BASE_URL="${{ github.event.inputs.base_url }}" \
+            --out json=load-test-results.json \
+            load-tests/api-load-test.js
+        env:
+          K6_WEB_DASHBOARD: true
+          K6_WEB_DASHBOARD_EXPORT: k6-report.html
+
+      - name: Upload k6 results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-load-test-results
+          path: |
+            load-test-results.json
+            k6-report.html
+          retention-days: 30
+
+      - name: Check thresholds
+        if: always()
+        run: |
+          if [ -f load-test-results.json ]; then
+            echo "Load test completed. Check artifacts for detailed results."
+            cat load-test-results.json | jq '.metrics.http_req_duration.values["p(95)"]'
+          fi

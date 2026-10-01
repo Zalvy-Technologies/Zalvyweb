@@ -1,0 +1,337 @@
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* MOTION — Purposeful, physics-ready CSS keyframes.                            */
+/* All animation tokens persist in CSS vars (see tokens.css) so single motion  */
+/* primitives compose across components without JS strings.                    */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+@keyframes zalvy-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zalvy-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-translate-y-enter));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zalvy-blur-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--motion-translate-y-enter) / 2));
+    filter: blur(var(--motion-blur-enter));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes zalvy-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(var(--motion-scale-enter));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zalvy-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes zalvy-aurora {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(3%, -2%, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(-2%, 1%, 0) rotate(360deg);
+  }
+}
+
+@keyframes zalvy-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(var(--token-accent) / 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 0.75rem rgb(var(--token-accent) / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(var(--token-accent) / 0);
+  }
+}
+
+@keyframes zalvy-grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2%, -3%);
+  }
+  40% {
+    transform: translate(3%, 2%);
+  }
+  60% {
+    transform: translate(1%, -2%);
+  }
+  80% {
+    transform: translate(-1%, 3%);
+  }
+}
+
+@keyframes zalvy-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes zalvy-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes zalvy-gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes zalvy-caret-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes zalvy-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+@keyframes zalvy-glow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    filter: blur(40px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(60px);
+  }
+}
+
+@keyframes zalvy-particle-drift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: var(--particle-opacity, 0.2);
+  }
+  25% {
+    transform: translate(calc(var(--particle-drift, 12px) * 0.7), calc(var(--particle-drift, 12px) * -1)) scale(1.1);
+  }
+  50% {
+    transform: translate(var(--particle-drift, 12px), calc(var(--particle-drift, 12px) * 0.3)) scale(0.9);
+    opacity: calc(var(--particle-opacity, 0.2) * 1.5);
+  }
+  75% {
+    transform: translate(calc(var(--particle-drift, 12px) * -0.5), calc(var(--particle-drift, 12px) * 0.8)) scale(1.05);
+  }
+}
+
+@keyframes zalvy-glow-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes zalvy-shimmer-line {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes zalvy-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zalvy-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Reusable animation utility classes — JS-free entry animations ─── */
+.a-fade {
+  animation: zalvy-fade-in var(--duration-base) var(--ease-emphasized) both;
+}
+.a-rise {
+  animation: zalvy-rise var(--duration-base) var(--ease-emphasized) both;
+}
+.a-blur-in {
+  animation: zalvy-blur-in var(--duration-slow) var(--ease-emphasized) both;
+}
+.a-scale-in {
+  animation: zalvy-scale-in var(--duration-base) var(--ease-emphasized) both;
+}
+.a-float {
+  animation: zalvy-float 6s var(--ease-standard) infinite;
+}
+.a-glow-pulse {
+  animation: zalvy-glow-pulse 4s var(--ease-standard) infinite;
+}
+.a-slide-up {
+  animation: zalvy-slide-up var(--duration-slow) var(--ease-emphasized) both;
+}
+.a-slide-down {
+  animation: zalvy-slide-down var(--duration-slow) var(--ease-emphasized) both;
+}
+
+/* IntersectionObserver-triggered reveal (see <Reveal/> component). */
+[data-reveal] {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+[data-reveal="in"] {
+  animation: zalvy-blur-in var(--duration-slow) var(--ease-emphasized) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Aurora for hero background — runs continuous, gated by reduced-motion above. */
+.a-aurora {
+  animation: zalvy-aurora 36s linear infinite;
+}
+.a-breathe {
+  animation: zalvy-breathe 18s var(--ease-standard) infinite;
+}
+
+/* Marquee for trusted-by logo ribbon. */
+.a-marquee {
+  animation: zalvy-marquee 42s linear infinite;
+}
+
+/* Skeleton shimmer — used while remote content hydrates. */
+.a-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--token-surface-raised)) 0%,
+    rgb(var(--token-surface-overlay)) 50%,
+    rgb(var(--token-surface-raised)) 100%
+  );
+  background-size: 200% 100%;
+  animation: zalvy-shimmer 2.4s linear infinite;
+}
+
+/* Pause animations on hover for marquee — gentle UX concession. */
+.a-marquee-pause:hover .a-marquee {
+  animation-play-state: paused;
+}
+
+/* Gradient text animation */
+.t-gradient-iris {
+  background: linear-gradient(100deg, rgb(var(--token-accent)) 0%, rgb(var(--token-iris)) 50%, rgb(var(--token-accent)) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Stagger delay utilities */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.delay-7 { animation-delay: 0.7s; }
+.delay-8 { animation-delay: 0.8s; }
+.delay-9 { animation-delay: 0.9s; }
+.delay-10 { animation-delay: 1s; }
+
+/* Reduced motion — handled globally in base.css but explicit here for clarity */
+@media (prefers-reduced-motion: reduce) {
+  .a-fade,
+  .a-rise,
+  .a-blur-in,
+  .a-scale-in,
+  .a-float,
+  .a-glow-pulse,
+  .a-slide-up,
+  .a-slide-down,
+  .a-aurora,
+  .a-breathe,
+  .a-marquee,
+  .a-skeleton {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}

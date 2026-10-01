@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+  <defs>
+    <linearGradient id="markGradient" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7CE2F0"/>
+      <stop offset="50%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#5468E7"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="180" height="180" rx="40" fill="#7E247" opacity="0.9"/>
+  <rect width="180" height="180" rx="40" fill="white" opacity="0.04"/>
+
+  <g transform="translate(90, 90)">
+    <rect x="-56" y="-56" width="112" height="112" rx="24" fill="white" opacity="0.03"/>
+    <path
+      d="M-26 18c0-21.6 17.4-48 39-48 1.02 0 2.04.048 3 .144A34.35 34.35 0 0 0 -66 -16.5C-62 -2 -56.5 5.8 -56.5 16c0 6 3.6 15.9 7.5 16.5Z"
+      fill="url(#markGradient)" transform="translate(-28,-8)"
+    />
+    <path
+      d="M24.5 -2.5c0 11.6-5.8 13-13 13-.34 0-.68-.016-.8-.048A22.9 22.9 0 0 0 32 40c5-5 8-10.6 8-17 0-6-2-10.6-1.5-1Z"
+      fill="url(#markGradient)" transform="translate(8,-32)"
+    />
+  </g>
+</svg>

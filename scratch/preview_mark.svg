@@ -1,0 +1,48 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="zalvyBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F0FF" />
+      <stop offset="35%" stop-color="#0072FF" />
+      <stop offset="100%" stop-color="#0047FF" />
+    </linearGradient>
+    <linearGradient id="zalvyWhiteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E2E8F0" />
+    </linearGradient>
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0066FF" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#subtleGlow)">
+    <!-- Blue Stroke: Top bar -> Diagonal -> Left Loop -> Center -->
+    <path
+      d="M 40.5 24.5
+         L 70.5 24.5
+         Q 76.5 24.5 73.5 28.5
+         L 39.25 62.75
+         A 15.2 15.2 0 1 1 39.25 40.25
+         L 51.5 52.5"
+      fill="none"
+      stroke="url(#zalvyBlueGrad)"
+      stroke-width="7.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <!-- White Stroke: Bottom-Left Tail -> Right Loop -> Diagonal -->
+    <path
+      d="M 42 70
+         L 60.75 51.25
+         L 60.75 40.75
+         A 15.2 15.2 0 1 1 60.75 62.25
+         L 42 81"
+      fill="none"
+      stroke="url(#zalvyWhiteGrad)"
+      stroke-width="7.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>

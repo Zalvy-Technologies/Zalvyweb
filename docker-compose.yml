@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://zalvy:${POSTGRES_PASSWORD:-zalvy_dev_password}@db:5432/zalvy?schema=public
+      AI_DEFAULT_PROVIDER: ${AI_DEFAULT_PROVIDER:-ollama}
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2:3b}
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in your environment or .env file}
+    depends_on:
+      db:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: zalvy
+      POSTGRES_USER: zalvy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zalvy_dev_password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zalvy -d zalvy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  ollama-data:

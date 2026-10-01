@@ -1,0 +1,17 @@
+﻿@import "tailwindcss";
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./typography.css";
+@import "./motion.css";
+
+/*
+ * ZALVY — Global stylesheet entry.
+ *
+ * Import order is intentional:
+ *  1. Tailwind v4 primitives (preflight + @theme generation).
+ *  2. Design tokens (CSS custom properties exposed to @theme).
+ *  3. Base element styles (selection, focus ring, scrollbar, reduced-motion).
+ *  4. Typography system (fluid type ramp, anti-aliased rendering).
+ *  5. Motion tokens + keyframes (purposeful, accessible motion).
+ */

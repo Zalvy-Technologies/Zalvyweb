@@ -1,0 +1,297 @@
+@theme {
+  /* ─────────────────────── FONT FAMILIES (Inter, Manrope, Geist) ─────────────────────── */
+  --font-sans:
+    "Inter", "Manrope", "Geist", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    system-ui, sans-serif;
+  --font-display:
+    "Geist", "Manrope", "Inter Display", "Inter", -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Segoe UI Mono", monospace;
+
+  /* ─────────────────────── FLUID TYPE SCALE ─────────────────────── */
+  /* Uses clamp() for fully fluid typography. Anchored on min/max viewport. */
+  --text-display-1: clamp(3.25rem, 1.2rem + 8.2vw, 8rem);
+  --text-display-2: clamp(2.5rem, 1.1rem + 5.6vw, 5.25rem);
+  --text-display-3: clamp(2rem, 1rem + 4.2vw, 3.75rem);
+  --text-h1: clamp(2.25rem, 1.2rem + 4.4vw, 3.75rem);
+  --text-h2: clamp(1.75rem, 1rem + 3.2vw, 2.75rem);
+  --text-h3: clamp(1.4rem, 0.9rem + 2.2vw, 2rem);
+  --text-h4: clamp(1.2rem, 0.85rem + 1.5vw, 1.5rem);
+  --text-body-lg: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
+  --text-body-sm: 0.9375rem;
+  --text-caption: 0.8125rem;
+  --text-overline: 0.75rem;
+  --text-code: 0.875em;
+
+  /* ─────────────────────── TRACKING / LEADING ─────────────────────── */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.035em;
+  --tracking-display: -0.045em;
+  --tracking-snug: -0.018em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+  --tracking-widest: 0.2em;
+
+  --leading-none: 1;
+  --leading-tight: 1.05;
+  --leading-snug: 1.15;
+  --leading-display: 1.08;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose: 1.85;
+
+  /* ─────────────────────── RADIUS ─────────────────────── */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
+  --radius-4xl: 2.5rem;
+  --radius-pill: 999px;
+
+  /* ─────────────────────── EASE / DURATION ─────────────────────── */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerated: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerated: cubic-bezier(0.3, 0, 1, 1);
+  --ease-linear: linear;
+
+  --duration-instant: 80ms;
+  --duration-quick: 140ms;
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 520ms;
+  --duration-deliberate: 800ms;
+  --duration-cinematic: 1200ms;
+
+  /* ─────────────────────── LAYOUT TOKENS ─────────────────────── */
+  --container-max: 82rem;
+  --container-narrow: 48rem;
+  --container-wide: 96rem;
+  --container-gutter: clamp(1.25rem, 0.75rem + 2.5vw, 3rem);
+  --section-gap: clamp(5.5rem, 3rem + 10vw, 11rem);
+  --header-h: 4.25rem;
+  --header-h-sticky: 3.5rem;
+
+  /* ─────────────────────── Z-INDEX SCALE ─────────────────────── */
+  --z-base: 0;
+  --z-content: 10;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-popover: 300;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+
+  /* ─────────────────────── BRAND IDENTITY COLOR TOKENS ─────────────────────── */
+  --color-deep-blue: rgb(30 58 138);
+  --color-electric-cyan: rgb(34 211 238);
+  --color-purple-accent: rgb(168 85 247);
+  --color-neutral-white: rgb(255 255 255);
+  --color-neutral-slate: rgb(148 163 184);
+  --color-neutral-dark-gray: rgb(30 41 59);
+  --color-bg-near-black: rgb(7 9 13);
+
+  /* ─────────────────────── TAILWIND-THEMED COLORS ─────────────────────── */
+  --color-canvas: var(--token-canvas);
+  --color-surface: var(--token-surface);
+  --color-surface-raised: var(--token-surface-raised);
+  --color-surface-overlay: var(--token-surface-overlay);
+  --color-foreground: var(--token-foreground);
+  --color-foreground-muted: var(--token-foreground-muted);
+  --color-foreground-subtle: var(--token-foreground-subtle);
+  --color-border: var(--token-border);
+  --color-border-strong: var(--token-border-strong);
+  --color-accent: var(--token-accent);
+  --color-accent-foreground: var(--token-accent-foreground);
+  --color-accent-subtle: var(--token-accent-subtle);
+  --color-on-accent: var(--token-on-accent);
+  --color-iris: var(--token-iris);
+  --color-iris-foreground: var(--token-iris-foreground);
+  --color-sage: var(--token-sage);
+  --color-amber: var(--token-amber);
+  --color-rose: var(--token-rose);
+  --color-success: var(--token-success);
+  --color-warning: var(--token-warning);
+  --color-danger: var(--token-danger);
+  --color-info: var(--token-info);
+
+  /* ─────────────────────── ELEVATION / SHADOWS ─────────────────────── */
+  --shadow-xs: 0 1px 2px 0 rgb(var(--token-shadow-rgb) / 0.04);
+  --shadow-sm:
+    0 1px 3px 0 rgb(var(--token-shadow-rgb) / 0.06),
+    0 1px 2px -1px rgb(var(--token-shadow-rgb) / 0.04);
+  --shadow-md:
+    0 4px 16px -4px rgb(var(--token-shadow-rgb) / 0.10),
+    0 2px 6px -1px rgb(var(--token-shadow-rgb) / 0.06);
+  --shadow-lg:
+    0 16px 40px -12px rgb(var(--token-shadow-rgb) / 0.16),
+    0 6px 12px -4px rgb(var(--token-shadow-rgb) / 0.08);
+  --shadow-xl:
+    0 32px 64px -16px rgb(var(--token-shadow-rgb) / 0.20),
+    0 12px 24px -6px rgb(var(--token-shadow-rgb) / 0.10);
+  --shadow-2xl:
+    0 48px 96px -20px rgb(var(--token-shadow-rgb) / 0.28),
+    0 16px 36px -8px rgb(var(--token-shadow-rgb) / 0.14);
+  --shadow-inner: inset 0 1px 0 0 rgb(255 255 255 / 0.04), inset 0 1px 2px 0 rgb(var(--token-shadow-rgb) / 0.06);
+  --shadow-glow:
+    0 0 0 1px rgb(var(--token-accent) / 0.14), 0 8px 32px -8px rgb(var(--token-accent) / 0.18);
+  --shadow-premium-card:
+    0 1px 0 0 rgb(255 255 255 / 0.05) inset,
+    0 8px 32px -12px rgb(0 0 0 / 0.45),
+    0 2px 8px -2px rgb(0 0 0 / 0.3);
+
+  /* ─────────────────────── FOCUS RING ─────────────────────── */
+  --focus-ring: 0 0 0 2px var(--color-canvas), 0 0 0 4px rgb(var(--token-accent) / 0.7);
+
+  /* ─────────────────────── MOTION SAFETY ─────────────────────── */
+  --motion-scale-enter: 0.96;
+  --motion-opacity-enter: 0;
+  --motion-translate-y-enter: 1.25rem;
+  --motion-blur-enter: 8px;
+
+  /* ─────────────────────── GRADIENTS ─────────────────────── */
+  --gradient-iris: linear-gradient(
+    135deg,
+    rgb(var(--token-iris)) 0%,
+    rgb(var(--token-accent)) 100%
+  );
+  --gradient-noise:
+    radial-gradient(at 25% 15%, rgb(var(--token-accent) / 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgb(var(--token-iris) / 0.1) 0px, transparent 55%),
+    radial-gradient(at 70% 100%, rgb(var(--token-sage) / 0.06) 0px, transparent 60%);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* DARK (default) — ZALVY primary aesthetic: confident, premium, premium ink.   */
+/* Inspired by Linear / OpenAI / Anthropic — deep neutral with iridescent tide. */
+/* ─────────────────────────────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --token-iris: 129 140 248; /* celestial iris #818cf8 */
+  --token-iris-foreground: 255 255 255;
+  --token-accent: 56 189 248; /* luminous electric sky #38bdf8 */
+  --token-accent-foreground: 8 16 24;
+  --token-accent-subtle: rgb(56 189 248 / 0.12);
+  --token-on-accent: 0 0 0;
+
+  --token-sage: 52 211 153; /* mint/emerald #34d399 */
+  --token-amber: 250 204 21;
+  --token-rose: 244 114 182;
+  --token-success: 52 211 153;
+  --token-warning: 250 204 21;
+  --token-danger: 248 113 113;
+  --token-info: 56 189 248;
+
+  --token-canvas: 8 10 15; /* deep obsidian slate */
+  --token-surface: 13 17 23;
+  --token-surface-raised: 19 24 33;
+  --token-surface-overlay: 26 33 45;
+  --token-foreground: 241 245 249; /* ultra-crisp slate white */
+  --token-foreground-muted: 156 168 184;
+  --token-foreground-subtle: 100 116 139;
+  --token-border: 34 43 56;
+  --token-border-strong: 58 72 92;
+  --token-shadow-rgb: 0 0 0;
+
+  --token-grain-opacity: 0.035;
+  --token-hairline: rgb(255 255 255 / 0.07);
+
+  --token-gradient-canvas:
+    radial-gradient(
+      ellipse 110% 85% at 50% -15%,
+      rgb(var(--token-accent) / 0.10) 0%,
+      transparent 58%
+    ),
+    radial-gradient(ellipse 70% 55% at 100% 0%, rgb(var(--token-iris) / 0.08) 0%, transparent 52%),
+    radial-gradient(ellipse 45% 35% at 0% 100%, rgb(var(--token-iris) / 0.035) 0%, transparent 55%),
+    linear-gradient(to bottom, transparent 0%, rgb(var(--token-canvas)) 92%);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* LIGHT — warm, refined, Stripe/Notion-grade legible surface for marketing.   */
+/* ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --token-iris: 79 70 229;
+  --token-iris-foreground: 255 255 255;
+  --token-accent: 14 165 200; /* cyan-teal, accessible on white */
+  --token-accent-foreground: 255 255 255;
+  --token-accent-subtle: rgb(14 165 200 / 0.08);
+  --token-on-accent: 255 255 255;
+
+  --token-sage: 16 185 129;
+  --token-amber: 217 119 6;
+  --token-rose: 219 39 119;
+  --token-success: 22 163 74;
+  --token-warning: 217 119 6;
+  --token-danger: 220 38 38;
+  --token-info: 79 70 229;
+
+  --token-canvas: 252 251 248; /* warm paper */
+  --token-surface: 255 254 252;
+  --token-surface-raised: 255 255 255;
+  --token-surface-overlay: 250 249 246;
+  --token-foreground: 14 17 22;
+  --token-foreground-muted: 71 80 92;
+  --token-foreground-subtle: 130 138 150;
+  --token-border: 230 226 220;
+  --token-border-strong: 200 196 190;
+  --token-shadow-rgb: 15 23 42;
+
+  --token-grain-opacity: 0.02;
+  --token-hairline: rgb(15 23 42 / 0.08);
+
+  --token-gradient-canvas:
+    radial-gradient(
+      ellipse 100% 80% at 50% -10%,
+      rgb(var(--token-accent) / 0.08) 0%,
+      transparent 60%
+    ),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgb(var(--token-iris) / 0.06) 0%, transparent 50%);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* HIGH CONTRAST — Ultra-legible AAA surfaces for vision-impaired users.       */
+/* ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="high-contrast"] {
+  color-scheme: dark;
+
+  --token-iris: 147 197 253;
+  --token-iris-foreground: 0 0 0;
+  --token-accent: 0 255 255;
+  --token-accent-foreground: 0 0 0;
+  --token-accent-subtle: rgb(0 255 255 / 0.2);
+  --token-on-accent: 0 0 0;
+
+  --token-sage: 74 222 128;
+  --token-amber: 250 204 21;
+  --token-rose: 244 114 182;
+  --token-success: 74 222 128;
+  --token-warning: 250 204 21;
+  --token-danger: 248 113 113;
+  --token-info: 147 197 253;
+
+  --token-canvas: 0 0 0;
+  --token-surface: 10 10 10;
+  --token-surface-raised: 20 20 20;
+  --token-surface-overlay: 30 30 30;
+  --token-foreground: 255 255 255;
+  --token-foreground-muted: 220 220 220;
+  --token-foreground-subtle: 180 180 180;
+  --token-border: 150 150 150;
+  --token-border-strong: 255 255 255;
+  --token-shadow-rgb: 0 0 0;
+
+  --token-grain-opacity: 0;
+  --token-hairline: rgb(255 255 255 / 0.5);
+
+  --token-gradient-canvas: none;
+}

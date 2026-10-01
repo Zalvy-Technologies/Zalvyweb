@@ -1,0 +1,504 @@
+// =============================================================================
+// Zalvy Platform - Enterprise Production Prisma Schema
+// File: prisma/schema.prisma
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -----------------------------------------------------------------------------
+// ENUMS
+// -----------------------------------------------------------------------------
+enum UserRole {
+  USER
+  COMPANY_MEMBER
+  ADMIN
+
+  @@map("user_role")
+}
+
+enum UserStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+  DELETED
+
+  @@map("user_status")
+}
+
+enum CompanyVerificationStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+
+  @@map("company_verification_status")
+}
+
+enum CompanySize {
+  STARTUP_1_10
+  SMALL_11_50
+  MEDIUM_51_200
+  LARGE_201_500
+  ENTERPRISE_500_PLUS
+
+  @@map("company_size")
+}
+
+enum CompanyMemberRole {
+  OWNER
+  RECRUITER
+  MEMBER
+
+  @@map("company_member_role")
+}
+
+enum LocationType {
+  REMOTE
+  HYBRID
+  ON_SITE
+
+  @@map("location_type")
+}
+
+enum InternshipStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  ARCHIVED
+
+  @@map("internship_status")
+}
+
+enum ApplicationStatus {
+  APPLIED
+  UNDER_REVIEW
+  SHORTLISTED
+  INTERVIEWING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+
+  @@map("application_status")
+}
+
+enum CertificateStatus {
+  ISSUED
+  REVOKED
+
+  @@map("certificate_status")
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+
+  @@map("blog_status")
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  MODERATOR
+  CONTENT_EDITOR
+  SUPPORT_AGENT
+
+  @@map("admin_role")
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  COMPANY_DOMAIN_VERIFICATION
+  TWO_FACTOR
+
+  @@map("token_type")
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SMS
+  PUSH
+
+  @@map("notification_channel")
+}
+
+enum EmailStatus {
+  QUEUED
+  PROCESSING
+  SENT
+  DELIVERED
+  FAILED
+  BOUNCED
+
+  @@map("email_status")
+}
+
+// -----------------------------------------------------------------------------
+// MODELS
+// -----------------------------------------------------------------------------
+
+model User {
+  id              String      @id @default(uuid()) @db.Uuid
+  email           String      @unique @db.VarChar(255)
+  passwordHash    String      @map("password_hash") @db.VarChar(255)
+  firstName       String      @map("first_name") @db.VarChar(100)
+  lastName        String      @map("last_name") @db.VarChar(100)
+  avatarUrl       String?     @map("avatar_url") @db.Text
+  headline        String?     @db.VarChar(255)
+  bio             String?     @db.Text
+  phoneNumber     String?     @map("phone_number") @db.VarChar(30)
+  resumeUrl       String?     @map("resume_url") @db.Text
+  portfolioUrl    String?     @map("portfolio_url") @db.Text
+  githubUrl       String?     @map("github_url") @db.Text
+  linkedinUrl     String?     @map("linkedin_url") @db.Text
+  role            UserRole    @default(USER)
+  status          UserStatus  @default(PENDING_VERIFICATION)
+  isEmailVerified Boolean     @default(false) @map("is_email_verified")
+  lastLoginAt     DateTime?   @map("last_login_at") @db.Timestamptz
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  // Relations
+  companyMemberships CompanyMember[]
+  internshipsCreated Internship[]        @relation("InternshipCreator")
+  applications       Application[]       @relation("ApplicantUser")
+  reviewedApps       Application[]       @relation("ReviewerUser")
+  certificates       Certificate[]
+  projects           Project[]
+  verificationTokens VerificationToken[]
+  notifications      Notification[]
+
+  @@index([email])
+  @@index([status])
+  @@index([role])
+  @@map("users")
+}
+
+model Admin {
+  id          String    @id @default(uuid()) @db.Uuid
+  email       String    @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  firstName   String    @map("first_name") @db.VarChar(100)
+  lastName    String    @map("last_name") @db.VarChar(100)
+  role        AdminRole @default(MODERATOR)
+  permissions Json      @default("[]")
+  isActive    Boolean   @default(true) @map("is_active")
+  lastLoginAt DateTime? @map("last_login_at") @db.Timestamptz
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  // Relations
+  blogPosts BlogPost[]
+
+  @@index([email])
+  @@index([role])
+  @@map("admins")
+}
+
+model Company {
+  id                 String                    @id @default(uuid()) @db.Uuid
+  name               String                    @db.VarChar(255)
+  slug               String                    @unique @db.VarChar(255)
+  legalName          String?                   @map("legal_name") @db.VarChar(255)
+  taxId              String?                   @map("tax_id") @db.VarChar(100)
+  domain             String?                   @db.VarChar(255)
+  logoUrl            String?                   @map("logo_url") @db.Text
+  coverImageUrl      String?                   @map("cover_image_url") @db.Text
+  websiteUrl         String?                   @map("website_url") @db.Text
+  description        String?                   @db.Text
+  industry           String?                   @db.VarChar(100)
+  companySize        CompanySize               @default(SMALL_11_50) @map("company_size")
+  verificationStatus CompanyVerificationStatus @default(UNVERIFIED) @map("verification_status")
+  verifiedAt         DateTime?                 @map("verified_at") @db.Timestamptz
+  createdAt          DateTime                  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime                  @updatedAt @map("updated_at") @db.Timestamptz
+
+  // Relations
+  members            CompanyMember[]
+  internships        Internship[]
+  certificates       Certificate[]
+  verificationTokens VerificationToken[]
+
+  @@index([slug])
+  @@index([verificationStatus])
+  @@index([domain])
+  @@map("companies")
+}
+
+model CompanyMember {
+  id        String            @id @default(uuid()) @db.Uuid
+  companyId String            @map("company_id") @db.Uuid
+  userId    String            @map("user_id") @db.Uuid
+  role      CompanyMemberRole @default(MEMBER)
+  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime          @updatedAt @map("updated_at") @db.Timestamptz
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, userId], name: "uk_company_user")
+  @@index([companyId])
+  @@index([userId])
+  @@map("company_members")
+}
+
+model Internship {
+  id                  String           @id @default(uuid()) @db.Uuid
+  companyId           String           @map("company_id") @db.Uuid
+  createdByUserId     String           @map("created_by_user_id") @db.Uuid
+  title               String           @db.VarChar(255)
+  slug                String           @unique @db.VarChar(255)
+  description         String           @db.Text
+  requirements        String[]         @default([])
+  responsibilities    String[]         @default([])
+  skillsRequired      String[]         @map("skills_required") @default([])
+  location            String?          @db.VarChar(255)
+  locationType        LocationType     @default(REMOTE) @map("location_type")
+  stipendAmount       Decimal          @default(0.00) @map("stipend_amount") @db.Decimal(12, 2)
+  stipendCurrency     String           @default("USD") @map("stipend_currency") @db.VarChar(3)
+  durationMonths      Int              @default(3) @map("duration_months")
+  openingsCount       Int              @default(1) @map("openings_count")
+  applicationDeadline DateTime         @map("application_deadline") @db.Timestamptz
+  status              InternshipStatus @default(DRAFT)
+  viewsCount          Int              @default(0) @map("views_count")
+  publishedAt         DateTime?        @map("published_at") @db.Timestamptz
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt           DateTime         @updatedAt @map("updated_at") @db.Timestamptz
+
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  creator      User          @relation("InternshipCreator", fields: [createdByUserId], references: [id], onDelete: Restrict)
+  applications Application[]
+  certificates Certificate[]
+
+  @@index([companyId])
+  @@index([status])
+  @@index([locationType])
+  @@index([applicationDeadline])
+  @@index([status, locationType, applicationDeadline])
+  @@map("internships")
+}
+
+model Application {
+  id                 String            @id @default(uuid()) @db.Uuid
+  internshipId       String            @map("internship_id") @db.Uuid
+  applicantId        String            @map("applicant_id") @db.Uuid
+  coverLetter        String?           @map("cover_letter") @db.Text
+  resumeSnapshotUrl  String            @map("resume_snapshot_url") @db.Text
+  customAnswers      Json              @default("{}") @map("custom_answers")
+  status             ApplicationStatus @default(APPLIED)
+  reviewerNotes      String?           @map("reviewer_notes") @db.Text
+  reviewedAt         DateTime?         @map("reviewed_at") @db.Timestamptz
+  reviewedByUserId   String?           @map("reviewed_by_user_id") @db.Uuid
+  createdAt          DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime          @updatedAt @map("updated_at") @db.Timestamptz
+
+  internship Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  applicant  User       @relation("ApplicantUser", fields: [applicantId], references: [id], onDelete: Cascade)
+  reviewer   User?      @relation("ReviewerUser", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([internshipId, applicantId], name: "uk_internship_applicant")
+  @@index([internshipId])
+  @@index([applicantId])
+  @@index([status])
+  @@map("applications")
+}
+
+model Certificate {
+  id                String            @id @default(uuid()) @db.Uuid
+  certificateNumber String            @unique @map("certificate_number") @db.VarChar(100)
+  verificationHash  String            @unique @map("verification_hash") @db.VarChar(255)
+  recipientId       String            @map("recipient_id") @db.Uuid
+  issuerCompanyId   String?           @map("issuer_company_id") @db.Uuid
+  internshipId      String?           @map("internship_id") @db.Uuid
+  title             String            @db.VarChar(255)
+  description       String?           @db.Text
+  issueDate         DateTime          @default(now()) @map("issue_date") @db.Date
+  expirationDate    DateTime?         @map("expiration_date") @db.Date
+  certificateUrl    String            @map("certificate_url") @db.Text
+  status            CertificateStatus @default(ISSUED)
+  metadata          Json              @default("{}")
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime          @updatedAt @map("updated_at") @db.Timestamptz
+
+  recipient User        @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  company   Company?    @relation(fields: [issuerCompanyId], references: [id], onDelete: SetNull)
+  internship Internship? @relation(fields: [internshipId], references: [id], onDelete: SetNull)
+
+  @@index([recipientId])
+  @@index([verificationHash])
+  @@index([certificateNumber])
+  @@map("certificates")
+}
+
+model Project {
+  id                   String   @id @default(uuid()) @db.Uuid
+  userId               String   @map("user_id") @db.Uuid
+  title                String   @db.VarChar(255)
+  slug                 String   @db.VarChar(255)
+  description          String   @db.Text
+  techStack            String[] @map("tech_stack") @default([])
+  githubRepositoryUrl String?  @map("github_repository_url") @db.Text
+  liveDemoUrl          String?  @map("live_demo_url") @db.Text
+  thumbnailUrl         String?  @map("thumbnail_url") @db.Text
+  mediaUrls            String[] @map("media_urls") @default([])
+  isFeatured           Boolean  @default(false) @map("is_featured")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, slug], name: "uk_user_project_slug")
+  @@index([userId])
+  @@index([isFeatured])
+  @@map("projects")
+}
+
+model BlogPost {
+  id              String     @id @default(uuid()) @db.Uuid
+  authorAdminId   String     @map("author_admin_id") @db.Uuid
+  title           String     @db.VarChar(255)
+  slug            String     @unique @db.VarChar(255)
+  excerpt         String?    @db.Text
+  content         String     @db.Text
+  coverImageUrl   String?    @map("cover_image_url") @db.Text
+  status          BlogStatus @default(DRAFT)
+  viewsCount      Int        @default(0) @map("views_count")
+  readTimeMinutes Int        @default(3) @map("read_time_minutes")
+  metaTitle       String?    @map("meta_title") @db.VarChar(255)
+  metaDescription String?    @map("meta_description") @db.Text
+  publishedAt     DateTime?  @map("published_at") @db.Timestamptz
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz
+
+  author Admin         @relation(fields: [authorAdminId], references: [id], onDelete: Restrict)
+  tags   BlogPostTag[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([authorAdminId])
+  @@map("blog_posts")
+}
+
+model BlogTag {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique @db.VarChar(100)
+  slug      String   @unique @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  posts BlogPostTag[]
+
+  @@map("blog_tags")
+}
+
+model BlogPostTag {
+  postId String @map("post_id") @db.Uuid
+  tagId  String @map("tag_id") @db.Uuid
+
+  post BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("blog_post_tags")
+}
+
+model VerificationToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.VarChar(255)
+  type      TokenType
+  userId    String?   @map("user_id") @db.Uuid
+  companyId String?   @map("company_id") @db.Uuid
+  payload   Json?     @default("{}")
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz
+  usedAt    DateTime? @map("used_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  user    User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+  @@index([userId])
+  @@map("verification_tokens")
+}
+
+model Notification {
+  id         String              @id @default(uuid()) @db.Uuid
+  userId     String              @map("user_id") @db.Uuid
+  title      String              @db.VarChar(255)
+  message    String              @db.Text
+  channel    NotificationChannel @default(IN_APP)
+  actionUrl  String?             @map("action_url") @db.Text
+  payload    Json                @default("{}")
+  isRead     Boolean             @default(false) @map("is_read")
+  readAt     DateTime?           @map("read_at") @db.Timestamptz
+  createdAt  DateTime            @default(now()) @map("created_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model EmailLog {
+  id                String      @id @default(uuid()) @db.Uuid
+  recipientEmail    String      @map("recipient_email") @db.VarChar(255)
+  subject           String      @db.VarChar(255)
+  templateId        String      @map("template_id") @db.VarChar(100)
+  variables         Json        @default("{}")
+  status            EmailStatus @default(QUEUED)
+  providerMessageId String?     @map("provider_message_id") @db.VarChar(255)
+  errorMessage      String?     @map("error_message") @db.Text
+  retryCount        Int         @default(0) @map("retry_count")
+  sentAt            DateTime?   @map("sent_at") @db.Timestamptz
+  createdAt         DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([recipientEmail])
+  @@index([status])
+  @@map("emails_log")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String?  @map("actor_id") @db.Uuid
+  actorType  String   @map("actor_type") @db.VarChar(50)
+  action     String   @db.VarChar(100)
+  entityType String   @map("entity_type") @db.VarChar(100)
+  entityId   String?  @map("entity_id") @db.Uuid
+  ipAddress  String?  @map("ip_address") @db.VarChar(45)
+  userAgent  String?  @map("user_agent") @db.Text
+  changes    Json     @default("{}")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([actorId, actorType])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  intent    String   @db.VarChar(50)
+  name      String   @db.VarChar(200)
+  email     String   @db.VarChar(255)
+  company   String?  @db.VarChar(255)
+  message   String   @db.Text
+  status    String   @default("pending") @db.VarChar(50)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([email])
+  @@index([intent])
+  @@index([status])
+  @@index([createdAt])
+  @@map("leads")
+}

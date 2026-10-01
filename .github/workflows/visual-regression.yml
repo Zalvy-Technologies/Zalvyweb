@@ -1,0 +1,61 @@
+name: Visual Regression Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  visual-regression:
+    name: Visual Regression
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Start dev server
+        run: npm run dev &
+        env:
+          NODE_ENV: development
+
+      - name: Wait for server
+        run: sleep 10
+
+      - name: Run visual regression tests
+        run: npx playwright test e2e/visual-regression.spec.ts
+        env:
+          NODE_ENV: development
+
+      - name: Upload visual test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-screenshots
+          path: test-results/
+          retention-days: 30
+
+      - name: Upload screenshot diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: test-results/**/*.png
+          retention-days: 30
