@@ -1,4 +1,4 @@
-name: Lighthouse CI
+﻿name: Lighthouse CI
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
             http://localhost:3000/contact
             http://localhost:3000/about
             http://localhost:3000/verify
-          budgetPath: ./lighthouserc.json
+          configPath: ./lighthouserc.json
           uploadArtifacts: true
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

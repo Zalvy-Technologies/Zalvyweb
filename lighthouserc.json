@@ -1,44 +1,142 @@
-# ZALVY Lighthouse CI Configuration
-
-ci:
-  collect:
-    numberOfRuns: 3
-    startServerCommand: "npm run start"
-    url:
-      - "http://localhost:3000"
-      - "http://localhost:3000/platform"
-      - "http://localhost:3000/contact"
-      - "http://localhost:3000/about"
-      - "http://localhost:3000/verify"
-  upload:
-    target: "temporary-public-storage"
-    # For production, use LHCI_GITHUB_APP_TOKEN with GitHub App
-  assert:
-    assertions:
-      # Performance budgets - Series A grade
-      "categories:performance": ["error", { minScore: 0.95 }]
-      "categories:accessibility": ["error", { minScore: 1.0 }]
-      "categories:best-practices": ["error", { minScore: 1.0 }]
-      "categories:seo": ["error", { minScore: 1.0 }]
-      
-      # Core Web Vitals budgets
-      "largest-contentful-paint": ["error", { maxNumericValue: 2500 }]
-      "first-input-delay": ["error", { maxNumericValue: 100 }]
-      "cumulative-layout-shift": ["error", { maxNumericValue: 0.1 }]
-      "interactive": ["error", { maxNumericValue: 3800 }]
-      
-      # Resource budgets
-      "total-byte-weight": ["error", { maxNumericValue: 500000 }]
-      "script-bootup-time-is-not-too-long": ["error", { maxNumericValue: 800 }]
-      "mainthread-work-breakdown": ["error", { maxNumericValue: 2000 }]
-      "uses-long-cache-ttl": ["error", { minScore: 0.9 }]
-      "uses-text-compression": ["error", { minScore: 0.9 }]
-      "offscreen-images": ["error", { minScore: 1.0 }]
-      "modern-image-formats": ["error", { minScore: 1.0 }]
-      
-      # Security/Privacy
-      "viewport": ["error", { minScore: 1.0 }]
-      "document-title": ["error", { minScore: 1.0 }]
-      "meta-description": ["error", { minScore: 1.0 }]
-      "html-has-lang": ["error", { minScore: 1.0 }]
-      "image-alt": ["error", { minScore: 1.0 }]
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "startServerCommand": "node scripts/e2e-server.mjs",
+      "url": [
+        "http://localhost:3000",
+        "http://localhost:3000/platform",
+        "http://localhost:3000/contact",
+        "http://localhost:3000/about",
+        "http://localhost:3000/verify"
+      ]
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": [
+          "error",
+          {
+            "minScore": 0.95
+          }
+        ],
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "categories:best-practices": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "largest-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 2500
+          }
+        ],
+        "first-input-delay": [
+          "error",
+          {
+            "maxNumericValue": 100
+          }
+        ],
+        "cumulative-layout-shift": [
+          "error",
+          {
+            "maxNumericValue": 0.1
+          }
+        ],
+        "interactive": [
+          "error",
+          {
+            "maxNumericValue": 3800
+          }
+        ],
+        "total-byte-weight": [
+          "error",
+          {
+            "maxNumericValue": 500000
+          }
+        ],
+        "script-bootup-time-is-not-too-long": [
+          "error",
+          {
+            "maxNumericValue": 800
+          }
+        ],
+        "mainthread-work-breakdown": [
+          "error",
+          {
+            "maxNumericValue": 2000
+          }
+        ],
+        "uses-long-cache-ttl": [
+          "error",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "uses-text-compression": [
+          "error",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "offscreen-images": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "modern-image-formats": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "viewport": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "document-title": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "meta-description": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "html-has-lang": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "image-alt": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ]
+      }
+    }
+  }
+}
