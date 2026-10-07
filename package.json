@@ -9,8 +9,9 @@
     "node": ">=20.11.0"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "prisma generate && next build --webpack",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",

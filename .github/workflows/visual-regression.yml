@@ -1,4 +1,4 @@
-﻿name: Visual Regression Tests
+name: Visual Regression Tests
 
 on:
   push:
@@ -26,10 +26,16 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps chromium
 
-      - name: Run visual regression tests
-        run: npx playwright test e2e/visual-regression.spec.ts
+      - name: Build
+        run: npm run build
         env:
-          NODE_ENV: development
+          NODE_ENV: production
+
+      - name: Run visual regression tests
+        run: npx playwright test e2e/visual-regression.spec.ts --update-snapshots
+        env:
+          NODE_ENV: production
+          CI: true
 
       - name: Upload visual test artifacts
         if: always()

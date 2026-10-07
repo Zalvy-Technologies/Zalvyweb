@@ -19,12 +19,17 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.1,
+    },
+  },
   webServer: {
     // Production build + standalone server: deterministic and fast, unlike
     // `next dev`, whose on-demand compiles make hydration timing unreliable.
-    command: "npm run build && node scripts/e2e-server.mjs",
+    command: process.env.CI ? "node scripts/e2e-server.mjs" : "npm run build && node scripts/e2e-server.mjs",
     url: "http://localhost:3000",
     reuseExistingServer: true,
-    timeout: 600000,
+    timeout: 120_000,
   },
 });

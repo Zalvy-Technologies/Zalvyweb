@@ -10,12 +10,15 @@ import { fileURLToPath } from "node:url";
  * Security: CSP is set dynamically in middleware with per-request nonces.
  * Middleware also injects CSRF tokens, rate limits, and security headers.
  */
+const isVercel = Boolean(process.env.VERCEL);
+
 const nextConfig: NextConfig = {
   // Produces a minimal self-contained server used by the production Docker image.
-  output: "standalone",
+  // Disabled on Vercel as Vercel manages its own serverless output tracing.
+  output: isVercel ? undefined : "standalone",
   // Anchor standalone tracing to this project — avoids workspace-root inference
   // when sibling lockfiles exist outside the repo.
-  outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
+  outputFileTracingRoot: isVercel ? undefined : dirname(fileURLToPath(import.meta.url)),
   reactStrictMode: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,

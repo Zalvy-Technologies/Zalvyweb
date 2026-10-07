@@ -27,7 +27,7 @@ if (existsSync(publicSrc)) {
 
 const server = spawn(process.execPath, [join(standalone, "server.js")], {
   stdio: "inherit",
-  env: { ...process.env, HOSTNAME: "127.0.0.1", PORT: "3000" },
+  env: { ...process.env, HOSTNAME: process.env.HOSTNAME || "0.0.0.0", PORT: process.env.PORT || "3000" },
 });
 
 server.on("exit", (code) => {
